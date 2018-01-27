@@ -22,7 +22,7 @@ $app->get('/', function ($request, $response) {
 
 #### Template
 ```php
-// templates/index.pjson/php
+// templates/index.pjson.php
 $pjson->greeting = $greeting;
 ```
 
