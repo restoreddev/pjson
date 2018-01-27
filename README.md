@@ -1,18 +1,35 @@
 # PJSON: A PHP templating system for JSON
 PJSON makes it easy to design JSON responses using a PHP template.
 The library was heavily inspired by Jbuilder by [@dhh](https://github.com/dhh).
+Here is an example using Slim:
 
-I will use Silex to explain the librarys abilities
+#### App
 ```php
-use Silex\Application;
+// index.php
+$app = new \Slim\App;
 
-$app['pjson'] = function () {
-    return new \Pjson\Renderer('../templates/');
+$container = $app->getContainer();
+$container['pjson'] = function () {
+    return new \Pjson\SlimRenderer('templates/');
 };
 
-$app->get('/', function () use ($app) {
-    return $app['pjson']->render('index.pjson.php', [
+$app->get('/', function ($request, $response) {
+    return $this->pjson->render($response, 'index.pjson.php', [
         'greeting' => 'Hello World!'
     ]);
 });
+```
+
+#### Template
+```php
+// templates/index.pjson/php
+$pjson->greeting = $greeting;
+```
+
+#### Response
+Response
+```json
+{
+    "greeting": "Hello World!"
+}
 ```
