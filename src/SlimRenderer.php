@@ -2,7 +2,9 @@
 
 namespace Pjson;
 
-class Renderer
+use Psr\Http\Message\ResponseInterface;
+
+class SlimRenderer
 {
     /**
      * Path to templates directory
@@ -28,7 +30,7 @@ class Renderer
      * @param array $data
      * @return string
      */
-    public function render($template, array $data)
+    public function render(ResponseInterface $response, $template, array $data)
     {
         $pjson = $this->protectedScopeInclude($template, new Pjson, $data);
 
@@ -37,7 +39,10 @@ class Renderer
             throw new \RuntimeException("Pjson serialization failed.");
         }
 
-        return $serializedData;
+        $response->getBody()->write($pjson->serialize());
+        $responseWithHeader = $response->withHeader('Content-Type', 'application/json;charset=utf-8');
+
+        return $responseWithHeader;
     }
 
     /**
