@@ -27,7 +27,6 @@ $pjson->greeting = $greeting;
 ```
 
 #### Response
-Response
 ```json
 {
     "greeting": "Hello World!"
